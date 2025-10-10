@@ -1,4 +1,4 @@
-# DyuminOneLove
+## DyuminOneLove
 Group Project / "Сatch The Spies" Challenge
 
 Содержание
@@ -28,7 +28,22 @@ Group Project / "Сatch The Spies" Challenge
 
 Исходные данные храняться здесь: https://drive.google.com/drive/folders/19bCT5pKF-QnfW05FW0Eb2dUsMrrnbUSD
 
+# *Не коммитим большие данные*
+Все заливаем на гугл-диск (создадим позже или делайте свой).
+И потом добавляем сюда ссылку с описание что хранится по ссылке.
+
 # 4. Структура проекта
+
+DyuminOneLove_Project/
+├── data/
+│   ├── raw/         # исходные файлы
+│   ├── processed/   # объединённые
+│   └── clean/       # очищенные
+├── src/             # скрипты обработки данных
+├── notebooks/       # Jupyter ноутбуки с анализом
+├── reports/         # графики и финальный отчёт
+├── README.md
+└── requirements.txt
 
 # 5. Использование
 
