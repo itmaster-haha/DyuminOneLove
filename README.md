@@ -36,8 +36,8 @@ Group Project / "Сatch The Spies" Challenge
 
 # 4. Структура проекта
 
-DyuminOneLove_Project/
-├── data/
+DyuminOneLove_Project/  
+├── data/  
 │   ├── raw/         # исходные файлы  
 │   ├── processed/   # объединённые  
 │   └── clean/       # очищенные  
