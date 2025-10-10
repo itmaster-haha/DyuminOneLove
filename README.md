@@ -38,14 +38,14 @@ Group Project / "Сatch The Spies" Challenge
 
 DyuminOneLove_Project/
 ├── data/
-│   ├── raw/         # исходные файлы\n
-│   ├── processed/   # объединённые\n
-│   └── clean/       # очищенные\n
-├── src/             # скрипты обработки данных\n
-├── notebooks/       # Jupyter ноутбуки с анализом\n
-├── reports/         # графики и финальный отчёт\n
-├── README.md\n
-└── requirements.txt\n
+│   ├── raw/         # исходные файлы  
+│   ├── processed/   # объединённые  
+│   └── clean/       # очищенные  
+├── src/             # скрипты обработки данных  
+├── notebooks/       # Jupyter ноутбуки с анализом  
+├── reports/         # графики и финальный отчёт  
+├── README.md  
+└── requirements.txt  
 
 # 5. Использование
 
