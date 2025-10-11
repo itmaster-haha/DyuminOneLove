@@ -1,0 +1,40 @@
+# --- OS ---
+Thumbs.db
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+.env/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Data files ---
+data/raw/
+data/tmp/
+*.csv
+*.xlsx
+*.json
+*.zip
+
+# --- Credentials ---
+*.key
+*.pem
+*.json
+
+# --- IDE ---
+.vscode/
+.idea/
+
+# --- Other ---
+*.bak
+*.swp
