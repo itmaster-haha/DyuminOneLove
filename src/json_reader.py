@@ -12,7 +12,7 @@ def read_json_file(file_path: str) -> pd.DataFrame:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
     except Exception as e:
-        logging.error(f"❌ Ошибка чтения JSON {file_path}: {e}")
+        logging.error(f" Ошибка чтения JSON {file_path}: {e}")
         return pd.DataFrame()
 
     rows = []
