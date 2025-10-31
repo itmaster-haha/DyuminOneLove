@@ -21,11 +21,11 @@ Group Project / "Сatch The Spies" Challenge
 # 2. Установка
 Язык программирования: Python версия 3.13.8
 
-Библиотеки:
-pandas
-openpyxl  # чтение Excel (Sirena, boarding passes)
-PyYAML  # парсинг YAML (SkyTeam-Exchange)
-pypdf2  # или pypdf, проект поддерживает оба
+## Библиотеки:
+- pandas
+- openpyxl  # чтение Excel (Sirena, boarding passes)
+- PyYAML  # парсинг YAML (SkyTeam-Exchange)
+- pypdf2  # или pypdf, проект поддерживает оба
 
 *надеюсь на ваше дополнение списка по мере добавления используемых библиотек, фреймворков и тд.*
 # 3. Исходные данные
@@ -54,24 +54,33 @@ DyuminOneLove_Project/
 # 5. Использование
 Основные команды:
 ---
-Этап 1. Нормализация расписания рейсов (PDF → CSV)
+## Этап 1. Нормализация расписания рейсов (PDF → CSV)
+'''
 python parse_pdf_tables.py
-Извлекает таблицы рейсов из PDF-файла Skyteam_Timetable.pdf
-и сохраняет промежуточный результат в:
+'''
+Извлекает таблицы рейсов из PDF-файла Skyteam_Timetable.pdf и сохраняет промежуточный результат в:
+'''
 data/processed/trial_flights.csv
-Этап 2. Сбор пассажирских данных
+'''
+## Этап 2. Сбор пассажирских данных
+'''
 python merge_csv.py
+'''
 Объединяет все исходные источники:
+'''
 BoardingData.csv 
 Sirena-export-fixed.xlsx 
 YourBoardingPassDotAero/ 
 PointzAggregator-AirlinesData.xml 
 FrequentFlyerForum-Profiles.json 
-SkyTeam-Exchange.yaml (расписание SkyTeam),
+SkyTeam-Exchange.yaml (расписание SkyTeam)
+'''
 и создаёт 1 основной и 2 промежуточных файла:
+'''
 data/processed/merged_passengers.csv
 data/processed/merged_passengers_flights.csv
 data/processed/merged_all_sources.csv
+'''
 ---
 *Впишите сюда кооманды для запуска работы вашей части с описанием ожидаемого результата выполнения*
 
