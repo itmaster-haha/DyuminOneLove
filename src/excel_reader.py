@@ -79,14 +79,14 @@ def process_single_excel(file_path):
 
         #  Убеждаемся, что DataFrame корректный
         if not isinstance(df, pd.DataFrame):
-            logging.error(f"❌ process_single_excel: вернул не DataFrame ({type(df)}) для {file_path}")
+            logging.error(f" process_single_excel: вернул не DataFrame ({type(df)}) для {file_path}")
             return pd.DataFrame()
 
-        logging.info(f"✅ {os.path.basename(file_path)}: {len(df)} записей извлечено.")
+        logging.info(f" {os.path.basename(file_path)}: {len(df)} записей извлечено.")
         return df
 
     except Exception as e:
-        logging.error(f"⚠️ Ошибка при обработке {file_path}: {e}")
+        logging.error(f" Ошибка при обработке {file_path}: {e}")
         return pd.DataFrame()
 
 
