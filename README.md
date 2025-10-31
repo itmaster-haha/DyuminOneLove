@@ -23,8 +23,8 @@ Group Project / "Сatch The Spies" Challenge
 
 Библиотеки:
 pandas
-openpyxl          # чтение Excel (Sirena, boarding passes)
-PyYAML            # парсинг YAML (SkyTeam-Exchange)
+openpyxl  # чтение Excel (Sirena, boarding passes)
+PyYAML  # парсинг YAML (SkyTeam-Exchange)
 pypdf2  # или pypdf, проект поддерживает оба
 
 *надеюсь на ваше дополнение списка по мере добавления используемых библиотек, фреймворков и тд.*
@@ -62,11 +62,11 @@ data/processed/trial_flights.csv
 Этап 2. Сбор пассажирских данных
 python merge_csv.py
 Объединяет все исходные источники:
-BoardingData.csv (посадочные),
-Sirena-export-fixed.xlsx (Sirena),
-YourBoardingPassDotAero/ (Excel-папка с билетами),
-PointzAggregator-AirlinesData.xml (бонусные карты),
-FrequentFlyerForum-Profiles.json (форумные профили),
+BoardingData.csv 
+Sirena-export-fixed.xlsx 
+YourBoardingPassDotAero/ 
+PointzAggregator-AirlinesData.xml 
+FrequentFlyerForum-Profiles.json 
 SkyTeam-Exchange.yaml (расписание SkyTeam),
 и создаёт 1 основной и 2 промежуточных файла:
 data/processed/merged_passengers.csv
