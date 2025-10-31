@@ -73,7 +73,7 @@ def normalize(df, mapping: dict | None = None) -> pd.DataFrame:
     try:
         df = df.fillna("").astype(str)
     except Exception as e:
-        logging.error(f"❌ Ошибка при fillna/astype(str): {e}")
+        logging.error(f" Ошибка при fillna/astype(str): {e}")
         for c in df.columns:
             logging.error(f"  • {c}: {type(df[c])}")
         return pd.DataFrame(columns=SCHEMA)
@@ -87,7 +87,7 @@ def normalize(df, mapping: dict | None = None) -> pd.DataFrame:
     try:
         df = df[SCHEMA]
     except Exception as e:
-        logging.error(f"❌ normalize: ошибка при фильтрации колонок: {e}")
+        logging.error(f" normalize: ошибка при фильтрации колонок: {e}")
         df = pd.DataFrame({col: df[col] if col in df.columns else "" for col in SCHEMA})
 
     return df
