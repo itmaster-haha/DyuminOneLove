@@ -15,9 +15,7 @@ from read_yaml_file import read_yaml_file
 from normalize_flight_table import normalize_flight_table
 from name_utils import split_full_name, merge_duplicate_passengers
 
-# ==========================================================
 #                  НАСТРОЙКА ЛОГИРОВАНИЯ
-# ==========================================================
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
@@ -160,7 +158,6 @@ def merge_duplicate_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 
-#                     ЭТАП 1 — ПАССАЖИРЫ
 
 def build_passenger_block(paths: dict, output: Path):
     start = time.time()
@@ -239,18 +236,21 @@ def build_passenger_block(paths: dict, output: Path):
 
 
 
-#              ЭТАП 2 — ДОБАВИТЬ РЕЙСЫ + JSON/YAML
+
 def attach_flights(passengers: Path, flights: Path, json_path: Path, yaml_path: Path, output: Path):
     start = time.time()
     logging.info(" Этап 2: присоединение рейсов (включая JSON и YAML)...")
 
-    p = pd.read_csv(passengers, sep=";", dtype=str)
+    # --- Чтение пассажиров ---
+    p = pd.read_csv(passengers, sep=";", dtype=str).fillna("")
     logging.info(f" Загружено пассажиров: {len(p)}")
 
+    # --- Основной flights.csv ---
     f = normalize_flight_table(flights)
     f["DepartDate"] = f["DepartDate"].apply(normalize_date)
     logging.info(f" Основной flights.csv: {len(f)} строк")
 
+    # --- JSON и YAML ---
     json_df = read_json_file(json_path)
     yaml_df = read_yaml_file(yaml_path)
     json_df = normalize(json_df)
@@ -261,29 +261,61 @@ def attach_flights(passengers: Path, flights: Path, json_path: Path, yaml_path: 
             d["DepartDate"] = d["DepartDate"].apply(normalize_date)
 
     f_all = pd.concat([f, json_df, yaml_df], ignore_index=True)
-    logging.info(f" Объединённый блок рейсов: {len(f_all)} строк (из CSV+JSON+YAML)")
+    logging.info(f" Объединённый блок рейсов: {len(f_all)} строк (CSV+JSON+YAML)")
 
+    # --- Очистка ключей (TravelDoc НЕ трогаем!) ---
     for df in (p, f_all):
-        for c in ["TravelDoc", "TicketNumber", "FlightNumber", "DepartDate"]:
+        for c in ["TicketNumber", "FlightNumber", "DepartDate"]:
             if c in df.columns:
                 df[c] = df[c].fillna("").apply(clean_key)
 
-    key_cols = ["FlightNumber", "DepartDate"]
+    # --- Определение ключей для объединения ---
+    if "TravelDoc" in p.columns and p["TravelDoc"].str.strip().ne("").any():
+        key_cols = ["TravelDoc", "FlightNumber", "DepartDate"]
+        logging.info(" Использую TravelDoc для точного объединения.")
+    elif "TicketNumber" in p.columns and p["TicketNumber"].str.strip().ne("").any():
+        key_cols = ["TicketNumber", "FlightNumber", "DepartDate"]
+        logging.info(" Использую TicketNumber для объединения.")
+    elif "BonusProgramm" in p.columns and p["BonusProgramm"].str.strip().ne("").any():
+        key_cols = ["BonusProgramm", "FlightNumber", "DepartDate"]
+        logging.info(" Использую BonusProgramm как ключ (если нет документов и билетов).")
+    else:
+        key_cols = ["FlightNumber", "DepartDate"]
+        logging.info(" Нет документов, билетов и бонусных программ — объединение только по рейсу.")
+
+    logging.info(f" Ключи объединения: {key_cols}")
+
+    # --- Объединение ---
     merged = p.merge(f_all, on=key_cols, how="left")
     merged = merge_duplicate_columns(merged)
+
+    # --- Исправляем путаницу паспорт ↔ билет ---
+    def fix_passport_ticket_conflict(row):
+        doc = str(row.get("TravelDoc", "")).strip()
+        ticket = str(row.get("TicketNumber", "")).strip()
+        if re.fullmatch(r"\d{10,}", doc) and not ticket:
+            row["TicketNumber"], row["TravelDoc"] = doc, ""
+        return row
+
+    merged = merged.apply(fix_passport_ticket_conflict, axis=1)
+
+    # --- Подсчёт совпадений ---
     matched = merged["Airline"].notna().sum()
     logging.info(f" Совпадений по рейсам: {matched}/{len(merged)} ({matched/len(merged):.1%})")
 
+    # --- Финальная очистка и сохранение ---
     merged.to_csv(output, sep=";", index=False, encoding="utf-8")
     logging.info(f" Пассажиры + рейсы сохранены: {output} (время: {time.time()-start:.1f}s)")
+
     return output
+
 
 
 
 #                     ЭТАП 3 — ФИНАЛ
 def clean_columns(input_path: Path, output: Path):
     start = time.time()
-    logging.info("🧹 Этап 3: очистка и выравнивание колонок...")
+    logging.info(" Этап 3: очистка и выравнивание колонок...")
     df = pd.read_csv(input_path, sep=";", dtype=str)
     df.columns = [c.replace("flights_", "").replace("sirena_", "").replace("boarding_", "")
                     .replace("excel_", "").replace("xml_", "").replace("json_", "")

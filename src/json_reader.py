@@ -6,7 +6,7 @@ import logging
 def read_json_file(file_path: str) -> pd.DataFrame:
     """
     Парсит Forum Profiles JSON в таблицу, совместимую с merge_all_data().
-    Заполняет базовые колонки: TravelDoc, TicketNumber, FlightNumber, DepartDate, ArrivalCity и т.д.
+    Поле Codeshare полностью очищается (всегда пустое).
     """
     try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -19,13 +19,12 @@ def read_json_file(file_path: str) -> pd.DataFrame:
 
     for profile in data.get("Forum Profiles", []):
         for flight in profile.get("Registered Flights", []):
-            # Собираем одну запись рейса
             rows.append({
-                "TravelDoc": "",  # В JSON этого нет
-                "TicketNumber": "",  # тоже нет
+                "TravelDoc": "",
+                "TicketNumber": "",
                 "FlightNumber": flight.get("Flight", ""),
                 "DepartDate": flight.get("Date", ""),
-                "CodeShare": flight.get("Codeshare", ""),
+                "CodeShare": "", 
                 "DepartCity": flight.get("Departure", {}).get("City", ""),
                 "DepartCode": flight.get("Departure", {}).get("Airport", ""),
                 "ArrivalCity": flight.get("Arrival", {}).get("City", ""),
@@ -40,9 +39,8 @@ def read_json_file(file_path: str) -> pd.DataFrame:
 
     df = pd.DataFrame(rows)
 
-    # Приводим к формату, который ждут merge-функции
-    expected_cols = ["TravelDoc", "TicketNumber", "FlightNumber"]
-    for col in expected_cols:
+    # Гарантируем наличие базовых колонок
+    for col in ["TravelDoc", "TicketNumber", "FlightNumber"]:
         if col not in df.columns:
             df[col] = ""
 

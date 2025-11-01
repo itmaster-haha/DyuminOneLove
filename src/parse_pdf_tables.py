@@ -49,7 +49,7 @@ def simple_flight_parser(pdf_path: str, start_page: int = 5, end_page: int = 10)
                                 flights.append(flight_data)
     
     except Exception as e:
-        print(f"❌ Ошибка: {e}")
+        print(f" Ошибка: {e}")
     
     return pd.DataFrame(flights)
 

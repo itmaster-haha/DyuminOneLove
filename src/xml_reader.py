@@ -19,10 +19,12 @@ def format_date(date_str: str) -> str:
             continue
     return date_str.strip()
 
+
 def read_xml_file(file_path: str) -> pd.DataFrame:
     """
-    Читает XML PointzAggregator-AirlinesData.xml и возвращает DataFrame
-    с нормализованными именами и форматированными датами.
+    Читает XML PointzAggregator-AirlinesData.xml и возвращает DataFrame.
+    В колонке BonusProgramm сохраняется только значение из атрибута 'number'
+    (например, 'FB 171388778').
     """
     try:
         tree = ET.parse(file_path)
@@ -40,8 +42,7 @@ def read_xml_file(file_path: str) -> pd.DataFrame:
             last_name = name.get("last", "").strip() if name is not None else ""
 
             for card in user.findall(".//card"):
-                ticket_number = card.get("number", "").strip()
-                bonus_programm = card.findtext("bonusprogramm", "").strip()
+                bonus_programm = card.get("number", "").strip()  
 
                 for activity in card.findall(".//activity"):
                     flight_count += 1
@@ -49,8 +50,8 @@ def read_xml_file(file_path: str) -> pd.DataFrame:
                         "TravelDoc": uid,
                         "FirstName": first_name,
                         "LastName": last_name,
-                        "TicketNumber": ticket_number,
-                        "BonusProgramm": bonus_programm,
+                        "TicketNumber": "",                 
+                        "BonusProgramm": bonus_programm,    
                         "FlightNumber": activity.findtext("Code", "").strip(),
                         "DepartDate": format_date(activity.findtext("Date", "")),
                         "DepartCode": activity.findtext("Departure", "").strip(),
@@ -64,7 +65,7 @@ def read_xml_file(file_path: str) -> pd.DataFrame:
             logging.warning(f" XML файл {file_path} не содержит данных.")
         else:
             logging.info(
-                f" XML прочитан: {file_path}\n"
+                f"    XML прочитан: {file_path}\n"
                 f"    Пользователей: {user_count}\n"
                 f"    Рейсов: {flight_count}\n"
                 f"    Строк в DataFrame: {df.shape[0]}"
@@ -75,6 +76,7 @@ def read_xml_file(file_path: str) -> pd.DataFrame:
     except Exception as e:
         logging.error(f" Ошибка при чтении XML {file_path}: {e}")
         return pd.DataFrame()
+
 
 if __name__ == "__main__":
     xml_file = "./data/raw/PointzAggregator-AirlinesData.xml"

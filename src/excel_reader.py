@@ -50,7 +50,7 @@ def extract_flight_info_resilient(sheet_df):
         "BookingCode": safe_get(sheet_df, 12, 1),
         "TicketNumber": safe_get(sheet_df, 12, 4),
         "Seat": safe_get(sheet_df, 10, 7),
-        "BonusProgramm": "",
+        "BonusProgramm": safe_get(sheet_df, 2, 5),
         "Fare": "",
     }
 

@@ -178,24 +178,32 @@ python src/merge_csv.py
 ##  Итоговая структура данных
 | Колонка | Описание |
 |----------|-----------|
-| FirstName | Имя пассажира |
-| SecondName | Отчество |
-| LastName | Фамилия |
-| PassengerSex | Пол |
-| PassengerBirthDate | Дата рождения |
-| TravelDoc | Документ |
-| TicketNumber | Номер билета |
-| DepartDate / DepartTime | Вылет |
-| ArrivalDate / ArrivalTime | Прибытие |
-| FlightNumber | Номер рейса |
-| Airline | Авиакомпания |
-| DepartCity / ArrivalCity | Города |
-| DepartCode / ArrivalCode | Коды аэропортов |
-| Fare / TrvCls | Тариф, класс |
-| BonusProgramm | Программа лояльности |
-| AgentInfo | Агент / источник |
+| **AgentInfo** | Информация об агенте или источнике данных |
+| **Airline** | Авиакомпания, выполняющая рейс |
+| **ArrivalCity** | Город прибытия |
+| **ArrivalCode** | Код аэропорта прибытия 
+| **Baggage** | Информация о багаже (вес, количество и т. д.) |
+| **BonusProgramm** | Программа лояльности / бонусная карта 
+| **BookingCode** | Код бронирования  |
+| **CodeShare** | Признак код-шеринга (рейс совместной эксплуатации) |
+| **DepartCity** | Город вылета |
+| **DepartCode** | Код аэропорта вылета  |
+| **DepartDate** | Дата вылета  |
+| **DepartTime** | Время вылета |
+| **Fare** | Тариф  |
+| **FirstName** | Имя пассажира |
+| **FlightNumber** | Номер рейса  |
+| **LastName** | Фамилия пассажира |
+| **Meal** | Питание на борту  |
+| **PassengerBirthDate** | Дата рождения пассажира |
+| **PassengerSex** | Пол пассажира  |
+| **SecondName** | Отчество  |
+| **TicketNumber** | Номер авиабилета  |
+| **TravelDoc** | Номер проездного документа  |
+| **TrvCls** | Класс обслуживания  |
 
 ---
+
 
 ##  Отладка и обработка ошибок
 
