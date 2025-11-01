@@ -38,3 +38,5 @@ data/tmp/
 # --- Other ---
 *.bak
 *.swp
+*.png
+*.txt
